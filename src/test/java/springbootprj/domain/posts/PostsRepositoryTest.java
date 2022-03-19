@@ -6,7 +6,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -21,7 +23,6 @@ class PostsRepositoryTest {
     public void cleanDb() {
        postsRepository.deleteAllInBatch();
     }
-
 
     @Test
     public void post_save_find() {
@@ -42,6 +43,24 @@ class PostsRepositoryTest {
         assertThat(post.getTitle()).isEqualTo(title);
         assertThat(post.getContent()).isEqualTo(content);
 
+    }
+
+    @Test
+    public void create_modifiedDate_test() {
+        LocalDateTime now = LocalDateTime.now();
+
+        Post savedPost = postsRepository.save(
+                Post.builder()
+                        .title("title")
+                        .author("author")
+                        .content("content")
+                        .build()
+        );
+
+        Post findPost = postsRepository.findById(savedPost.getId()).get();
+
+        assertThat(findPost.getCreateDate()).isAfter(now);
+        assertThat(findPost.getModifiedDate()).isEqualTo(findPost.getCreateDate());
 
     }
 
