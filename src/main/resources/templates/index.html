@@ -10,6 +10,14 @@
         <div class="row">
             <div class="col-md-6">
                 <a href="/posts/save" role="button" class="btn btn-primary"> 글 등록</a>
+                <th:bolck th:if ="${user} != null">
+                    <span id = "user" th:text = "|Logged in as : ${user.name}|"></span>
+                    <a href ="/logout" class ="btn btn-info active" role = "button">Logout</a>
+                </th:bolck>
+                <th:bolck th:if ="${user} == null">
+                    <a href ="/oauth2/authorization/google" class ="btn btn-success active" role = "button">Google Login</a>
+                    <a href ="/oauth2/authorization/naver" class ="btn btn-success active" role = "button">Naver Login</a>
+                </th:bolck>
             </div>
         </div>
     </div>
